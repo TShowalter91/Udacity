@@ -113,41 +113,50 @@ var navBar = function () {
 
     // Create a new li element
     var liElem = document.createElement("li");
-
+    liElem.id = "element" + i.toString();
     // Add the li element to the nav (ul) element
     navElem.appendChild(liElem);
 
     // Create a new a element
     var aElem = document.createElement("a");
-
+    liElem.id = "element" + i.toString();
     // Set the attributes on the new a element
 
     aElem.setAttribute('data-nav', navIds[i]);
-    aElem.setAttribute('id', sectIds[i]);
+    aElem.setAttribute('id', "nav"+sectIds[i]);
     aElem.setAttribute('class', 'menu__link');
     aElem.href = aElem + '#' + sectIds[i];
     aElem.innerHTML = navIds[i];
     liElem.appendChild(aElem);
 
     //addEventListener to aElem
-
+    addEvent(liElem.id)
     // Add active class to section in view
-    scrollTo();
+    //scrollTo();
   };
 }
 //run the navBar function
 navBar(); 
 
-// Scroll function
-var scrollTo = function () {
-  if ( document.querySelectorAll(sectIds[i]).length ) {
-    document.querySelectorAll('#landing__container').click(function() {
-    var number = this.attr('data-nav');
-      document.body.animate({
-        scrollTop: document.querySelector('#landing__container').offset().top - 0 
-      }, 750);
-    });
-
-    console.log(sectIds)
+// Event Listener
+function addEvent (ID) {
+  if ( navIds.length ) {
+    document.getElementById(ID).addEventListener("click", scrollTo(ID));
+    console.log(ID)
   }
+}
+
+
+// Scroll function
+  function scrollTo (ID) {
+  document.getElementById(ID).scrollIntoView();
+  //if ( document.querySelectorAll(sectIds[i]).length ) {
+    // document.querySelectorAll('#landing__container').click(function() {
+    // var number = this.attr('data-nav');
+    //   document.body.animate({
+    //     scrollTop: document.querySelector('#landing__container').offset().top - 0 
+    //   }, 750);
+    // });
+
+    // console.log(sectIds)
 }
