@@ -149,14 +149,45 @@ function addEvent (ID) {
 
 // Scroll function
   function scrollTo (ID) {
-  document.getElementById(ID).scrollIntoView();
-  //if ( document.querySelectorAll(sectIds[i]).length ) {
-    // document.querySelectorAll('#landing__container').click(function() {
-    // var number = this.attr('data-nav');
-    //   document.body.animate({
-    //     scrollTop: document.querySelector('#landing__container').offset().top - 0 
-    //   }, 750);
-    // });
+    document.getElementById(ID).scrollIntoView();
+}
 
-    // console.log(sectIds)
+function onVisibilityChange(el) {
+  var element = document.getElementById(el);
+  var visible = isElementInViewport(el);
+  if (visible && element.classList.contains('active') === false ) {
+    element.classList.add("active")
+    element.className="active"
+  } else if (!visible && element.classList.contains('active')) {
+    element.classList.remove("active")
+  }
+}
+
+function isElementInViewport (el) {
+
+  if (typeof jQuery === "function" && el instanceof jQuery) {
+      el = el[0];
+  }
+
+  var rect = document.getElementById(el).getBoundingClientRect();
+
+  return (rect.bottom >= 0 && 
+    rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.top >= -10
+  )
+}
+
+var handler = function () {sectIds.forEach(onVisibilityChange)};
+
+
+if (window.addEventListener) {
+  addEventListener('DOMContentLoaded', handler, false);
+  addEventListener('load', handler, false);
+  addEventListener('scroll', handler, false);
+  addEventListener('resize', handler, false);
+} else if (window.attachEvent)  {
+  attachEvent('onDOMContentLoaded', handler); // Internet Explorer 9+ :(
+  attachEvent('onload', handler);
+  attachEvent('onscroll', handler);
+  attachEvent('onresize', handler);
 }
