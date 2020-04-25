@@ -86,7 +86,6 @@ navBar();
 function addEvent (ID) {
   if ( navIds.length ) {
     document.getElementById(ID).addEventListener("click", scrollTo(ID));
-    console.log(ID)
   }
 }
 
