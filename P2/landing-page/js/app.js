@@ -113,41 +113,81 @@ var navBar = function () {
 
     // Create a new li element
     var liElem = document.createElement("li");
-
+    liElem.id = "element" + i.toString();
     // Add the li element to the nav (ul) element
     navElem.appendChild(liElem);
 
     // Create a new a element
     var aElem = document.createElement("a");
-
+    liElem.id = "element" + i.toString();
     // Set the attributes on the new a element
 
     aElem.setAttribute('data-nav', navIds[i]);
-    aElem.setAttribute('id', sectIds[i]);
+    aElem.setAttribute('id', "nav"+sectIds[i]);
     aElem.setAttribute('class', 'menu__link');
     aElem.href = aElem + '#' + sectIds[i];
     aElem.innerHTML = navIds[i];
     liElem.appendChild(aElem);
 
     //addEventListener to aElem
-
+    addEvent(liElem.id)
     // Add active class to section in view
-    scrollTo();
+    //scrollTo();
   };
 }
 //run the navBar function
 navBar(); 
 
-// Scroll function
-var scrollTo = function () {
-  if ( document.querySelectorAll(sectIds[i]).length ) {
-    document.querySelectorAll('#landing__container').click(function() {
-    var number = this.attr('data-nav');
-      document.body.animate({
-        scrollTop: document.querySelector('#landing__container').offset().top - 0 
-      }, 750);
-    });
-
-    console.log(sectIds)
+// Event Listener
+function addEvent (ID) {
+  if ( navIds.length ) {
+    document.getElementById(ID).addEventListener("click", scrollTo(ID));
+    console.log(ID)
   }
+}
+
+
+// Scroll function
+  function scrollTo (ID) {
+    document.getElementById(ID).scrollIntoView();
+}
+
+function onVisibilityChange(el) {
+  var element = document.getElementById(el);
+  var visible = isElementInViewport(el);
+  if (visible && element.classList.contains('active') === false ) {
+    element.classList.add("active")
+    element.className="active"
+  } else if (!visible && element.classList.contains('active')) {
+    element.classList.remove("active")
+  }
+}
+
+function isElementInViewport (el) {
+
+  if (typeof jQuery === "function" && el instanceof jQuery) {
+      el = el[0];
+  }
+
+  var rect = document.getElementById(el).getBoundingClientRect();
+
+  return (rect.bottom >= 0 && 
+    rect.top <= (window.innerHeight || document.documentElement.clientHeight) &&
+    rect.top >= -10
+  )
+}
+
+var handler = function () {sectIds.forEach(onVisibilityChange)};
+
+
+if (window.addEventListener) {
+  addEventListener('DOMContentLoaded', handler, false);
+  addEventListener('load', handler, false);
+  addEventListener('scroll', handler, false);
+  addEventListener('resize', handler, false);
+} else if (window.attachEvent)  {
+  attachEvent('onDOMContentLoaded', handler); // Internet Explorer 9+ :(
+  attachEvent('onload', handler);
+  attachEvent('onscroll', handler);
+  attachEvent('onresize', handler);
 }
